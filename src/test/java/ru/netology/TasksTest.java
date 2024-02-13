@@ -12,29 +12,86 @@ public class TasksTest {
 
 
     @Test
-    public void simpleTaskTest() {
+    public void simpleTaskTestTrue() {
         SimpleTask simpleTask = new SimpleTask(1, "Позвонить родителям");
-        Assertions.assertTrue(simpleTask.matches("Позвонить родителям"));
-        Assertions.assertTrue(simpleTask.matches(""));
-        Assertions.assertFalse(simpleTask.matches("Уйти в бар"));
+
+        boolean actual = simpleTask.matches("Позвонить");
+
+        Assertions.assertTrue(actual);
     }
 
     @Test
-    public void epicTest() {
-        String[] subtasks = {"Отдать ", "Взять", "Выбросить"};
-        Epic epic = new Epic(1, subtasks);
-        Assertions.assertTrue(epic.matches("Отдать"));
-        Assertions.assertFalse(epic.matches("продать"));
-        Assertions.assertFalse(epic.matches("Обменять"));
-        Assertions.assertTrue(epic.matches(""));
-    }
-    @Test
-    public void meetingTest() {
-        Meeting meeting = new Meeting(2, "Название", "Проект", "Время");
-        Assertions.assertTrue(meeting.matches("Проект"));
-        Assertions.assertTrue(meeting.matches(""));
-        Assertions.assertFalse(meeting.matches("Уйти в бар"));
+    public void simpleTaskTestFalse() {
+        SimpleTask simpleTask = new SimpleTask(1, "Позвонить родителям");
 
+        boolean actual = simpleTask.matches("Зайти");
+
+        Assertions.assertFalse(actual);
     }
+
+    @Test
+    public void epicTestTrue() {
+        String[] subtasks = {"Тунец", "Лосось", "Треска"};
+        Epic epic = new Epic(5, subtasks);
+
+        boolean actual = epic.matches("Треска");
+
+        Assertions.assertTrue(actual);
+    }
+
+    @Test
+    public void epicTestFalse() {
+        String[] subtasks = {"Тунец", "Лосось", "Треска"};
+        Epic epic = new Epic(5, subtasks);
+
+        boolean actual = epic.matches("Осетр");
+
+        Assertions.assertFalse(actual);
+    }
+
+    @Test
+    public void meetingTestFalse() {
+        Meeting meeting = new Meeting(
+                555,
+                "Меню ресторана",
+                "Блюда от шефа",
+                "по понедельникам с утра"
+        );
+
+        boolean actual = meeting.matches("Список");
+
+        Assertions.assertFalse(actual);
+    }
+
+    @Test
+    public void meetingTestProjectTrue() {
+        Meeting meeting = new Meeting(
+                555,
+                "Меню ресторана",
+                "Блюда от шефа",
+                "по понедельникам с утра"
+        );
+
+        boolean actual = meeting.matches("Блюда");
+
+        Assertions.assertTrue(actual);
+    }
+
+    @Test
+    public void meetingTestTopicTrue() {
+        Meeting meeting = new Meeting(
+                555,
+                "Меню ресторана",
+                "Блюда от шефа",
+                "по понедельникам с утра"
+        );
+
+        boolean actual = meeting.matches("Меню");
+
+        Assertions.assertTrue(actual);
+    }
+
+
+
 
 }
