@@ -179,6 +179,74 @@ public class TodosTest {
         Assertions.assertFalse(task1.equals(task3));
     }
 
+    @Test
+    public void shouldFindMultipleTasks() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+        String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+        Epic epic = new Epic(55, subtasks);
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+        Todos todos = new Todos();
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+        Task[] result = todos.search("Позвонить");
+        Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(simpleTask, result[0]);
+        result = todos.search("Молоко");
+        Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(epic, result[0]);
+        result = todos.search("Выкатка");
+        Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(meeting, result[0]);
+    }
+
+    @Test
+    public void shouldFindTwoTasks() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+        String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+        Epic epic = new Epic(55, subtasks);
+        Todos todos = new Todos();
+        todos.add(simpleTask);
+        todos.add(epic);
+        Task[] result = todos.search("Позвонить");
+        //Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(simpleTask, result[0]);
+        result = todos.search("Молоко");
+        //Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(epic, result[0]);
+    }
+
+    @Test
+    public void shouldFindNullTasks() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+
+        String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = {};
+        Task[] actual = todos.search("Дверь");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+
 
 }
 
